@@ -1,0 +1,62 @@
+%=====================导=======言==============================
+\documentclass[a4paper,12pt]{article}%\documentclass[a4paper,12pt,titlepage]{article}
+%======================Include Packages========================
+\usepackage[24367]{MCMthesis}  %队号在这里填写
+
+%===============设置正文和数学字体=============================
+%字体定义，大家可以参看网站：http://www.tug.dk/FontCatalogue/
+%有100多字体，可以复制放在这里设置字体，一般用默认字体即可。
+%有些字体需要安装一些字体文件，注意辨别。
+%我参照 MCM论文集的字体 使用如下宏包来定制字体。
+\usepackage{palatino}
+%\usepackage{unicode-math}
+%\setmathfont{STIXGeneral}
+%\makeatletter
+%\DeclareMathSizes{\@xipt}{20}{10}{6}%想要多大的字自己调节18这个数, 后面两个是调节下标的
+%\makeatother
+%设置段落之间的距离，若不需要删除或者注释掉即可。
+\setlength\parskip{.15\baselineskip}
+\usepackage[top=3cm,bottom=2cm,left=1cm,right=2cm]{geometry}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+ \usepackage{pdfpages}
+ \usepackage{float}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%$$$$$$$==正文开始==$$$$$$$%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%==========================论文标题===============================
+\title{Network}
+\author{\small Edit by:24367}
+\date{\today}
+%=================================================================
+%==================================================================
+%\makeatletter
+%\renewcommand*\l@section{\@dottedtocline{1}{1em}{1.5em}}
+%\renewcommand*\l@subsection{\@dottedtocline{2}{1.6em}{1.4em}}
+%\renewcommand*\l@subsubsection{\@dottedtocline{3}{1.7em}{0.9em}}
+%\makeatother
+\begin{document}
+
+%\thispagestyle{empty}
+%==================================================================
+
+%\vspace*{\fill}
+%====================摘=======要===================================
+ \includepdf[nup=1x1, delta=0mm 0mm,scale=1,pages={1-1}]{24367.pdf}     
+ \includepdf[nup=1x1, delta=0mm 0mm,scale=1,pages={1-1}]{Summary.pdf}                                           %
+\newpage                                                          %
+%==================================================================
+
+
+%====================生=成=目=录===================================
+%\small
+\tableofcontents                                                  %                                            %
+\newpage                                                          %
+%==================================================================
+\input{body.tex}
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%===========THE END OF PAPER============%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

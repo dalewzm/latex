@@ -1,0 +1,9 @@
+\beamer@endinputifotherversion {3.26pt}
+\beamer@sectionintoc {1}{降维与pca}{3}{0}{1}
+\beamer@sectionintoc {2}{PCA的过程与原理}{9}{0}{2}
+\beamer@subsectionintoc {2}{1}{一起来研究PCA}{11}{0}{2}
+\beamer@subsectionintoc {2}{2}{重新梳理}{31}{0}{2}
+\beamer@sectionintoc {3}{PCA的应用与实现}{35}{0}{3}
+\beamer@subsectionintoc {3}{1}{princomp介绍}{43}{0}{3}
+\beamer@subsectionintoc {3}{2}{在图形学的其它一些应用}{49}{0}{3}
+\beamer@sectionintoc {4}{PCA的进一步讨论}{53}{0}{4}
