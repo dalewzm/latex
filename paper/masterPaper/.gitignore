@@ -1,0 +1,5 @@
+#latex generate files
+*.aux
+*.log
+*.synctex.gz
+*.toc
