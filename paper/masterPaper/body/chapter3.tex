@@ -2,3 +2,25 @@
 算法流程图
 
 算法伪代码如下:
+\begin{algorithm}
+\caption{Navie Fair Sharing with Simple Delay Scheduling }
+\begin{algorithmic}
+\State Initialize j.skipcount to 0 for all jobs j.
+\If{n has a free slot } 
+\State sort jobs in increasing order of number of running tasks
+	\For{j in jobs}
+		\If{j has unlaunched task t with data on n }
+		\State launch t on n
+		\State j.skipcont = 0
+			\ElsIf{j has unlaunched task t }
+				\If{j.skipcount ≥ D}
+				\State launch t on n
+				\Else
+				\State set j.skipcount = j.skipcount + 1
+				\EndIf
+		\EndIf
+	\EndFor
+\EndIf
+\end{algorithmic}
+
+\end{algorithm}
