@@ -1,7 +1,7 @@
 \ProvidesPackage{sysuThesis}
 
 
-%%¸ü¸Ä×ÖÌå
+%%æ›´æ”¹å­—ä½“
 \newcommand{\chuhao}{\fontsize{42pt}{\baselineskip}\selectfont}
 \newcommand{\xiaochuhao}{\fontsize{36pt}{\baselineskip}\selectfont}
 \newcommand{\yihao}{\fontsize{28pt}{\baselineskip}\selectfont}
@@ -15,22 +15,24 @@
 \newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}
 \newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}
 
-%ÉèÖÃÄ¿Â¼¼ä¾à
+%è®¾ç½®ç›®å½•é—´è·
 \setlength\parskip{.001\baselineskip}
 
-%%¸ü¸ÄĞĞ¾à
+%%æ›´æ”¹è¡Œè·
 \RequirePackage{setspace}
 \linespread{1.5}
-
-
-%ÊıÑ§¹«Ê½¼Ó´Ö
+%ç« èŠ‚å®šåˆ¶
+ \CTEXsetup[name={ç¬¬,ç« },number={\chinese{section}},format={\zihao{3}\heiti },
+ beforeskip={2em},afterskip={1.1em}]{section}
+\CTEXsetup[format = {\zihao{-3}\heiti},numberformat={\zihao{-3}\bfseries}]{subsection}
+%æ•°å­¦å…¬å¼åŠ ç²—
 \RequirePackage{amsmath,bm}
 \boldmath
 
-%¿Õ¼¯·ûºÅ
+%ç©ºé›†ç¬¦å·
 \RequirePackage{amssymb}
 
-%%Í¼±íºÍÕÂ½Ú¹Ò¹³
+%%å›¾è¡¨å’Œç« èŠ‚æŒ‚é’©
 \numberwithin{table}{section}  
 \numberwithin{figure}{section}  
 \numberwithin{equation}{section}
@@ -38,36 +40,36 @@
 \numberwithin{figure}{subsection} 
 \numberwithin{equation}{subsection} 
 
-%¸øÍ¼Æ¬¼Ó±ß¿ò
+%ç»™å›¾ç‰‡åŠ è¾¹æ¡†
 \RequirePackage{fancybox}
 
-%²åÈëÍ¼Æ¬
+%æ’å…¥å›¾ç‰‡
 \RequirePackage{graphics}
 \graphicspath{{figures/}}
 
-%½ûÖ¹¸¡¶¯Ìå
+%ç¦æ­¢æµ®åŠ¨ä½“
 \RequirePackage{float}
 \newfloat{flowchart}{H}{lowflow}
-\floatname{flowchart}{Á÷³ÌÍ¼}
+\floatname{flowchart}{æµç¨‹å›¾}
 
-%²ÊÉ«±í¸ñÓëÑÕÉ«¶¨Òå
+%å½©è‰²è¡¨æ ¼ä¸é¢œè‰²å®šä¹‰
 \RequirePackage[table]{xcolor}
 \definecolor{regular}{rgb}{.329,.996,.623}
 \definecolor{spec}{rgb}{.121,.562,.996}
 
-%ÈıÏß±í
+%ä¸‰çº¿è¡¨
 \RequirePackage{booktabs}
 
-%ĞéÏß±í
+%è™šçº¿è¡¨
 \RequirePackage{arydshln}
 
-%±í¸ñÄÚÈİ»»ĞĞ
-\RequirePackage{longtable} %»»Ò³±í¸ñ
+%è¡¨æ ¼å†…å®¹æ¢è¡Œ
+\RequirePackage{longtable} %æ¢é¡µè¡¨æ ¼
 
 
 
 
-%ÇĞ¸îºÏ²¢pdf
+%åˆ‡å‰²åˆå¹¶pdf
 \RequirePackage{pdfpages}
 
 
