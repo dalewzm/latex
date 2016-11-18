@@ -1,0 +1,84 @@
+\chapter{Latex中的一些技巧}
+
+\tcbset{demobox/.style={colback=black!10}]}
+
+\section{版面设置}
+中文字号设置\\
+\begin{tabular}{ccc}  
+\toprule[1.5pt]  
+命令 & 大小& 实际显示 \\  
+\midrule  
+\textbackslash zihao\{ 0  \} & 42& {\zihao{0} 初号} \\  
+\textbackslash zihao\{ -0  \} & 36& {\zihao{-0} 小初号} \\  
+\textbackslash zihao\{ 3  \} & 16& {\zihao{3} 三号} \\ 
+
+...&...&...\\  
+\textbackslash zihao\{ -4  \} & 12& {\zihao{-4} 小四号} \\ 
+\bottomrule[1.5pt]  
+\end{tabular}  
+
+
+\section{数学环境}
+公式问题
+
+\section{源码编写}
+注释:
+ 单行注释
+使用\%号
+\begin{tkzexample}[code only,small,num]
+这一行将不会被编译
+haha
+\end{tkzexample}
+ 多行注释
+使用$\backslash$ iffalse $\backslash$ fi结构
+\begin{tkzexample}[code only,small,num]
+下面文字被注释了
+\iffalse
+我不信
+我没有被注释
+\fi
+请看效果
+\end{tkzexample}
+\tcbset{colback=black!10}
+\begin{tcolorbox}
+下面文字被注释了
+\iffalse
+我不信
+我没有被注释
+\fi
+请看效果
+\end{tcolorbox}
+
+
+\section{编写其它类型文本所需}
+旁白实现：
+
+使用marginpar命令可以给文档加上边注
+\begin{tkzexample}[code only,small,num]
+测试旁白效果 \marginpar{我就是旁白}
+\end{tkzexample}
+测试旁白效果 \marginpar{我就是旁白}
+
+\begin{tcolorbox}[title=演示效果]
+$$ \text{中文公式}a^2+b^2=c^2 $$
+\end{tcolorbox}
+
+\tcbset{frogbox/.style={enhanced,colback=green!10,colframe=green!65!black,
+enlarge top by=5.5mm,
+overlay={\foreach \x in {2cm,3.5cm} {
+\begin{scope}[shift={([xshift=\x]frame.north west)}]
+\path[draw=green!65!black,fill=green!10,line width=1mm] (0,0) arc (0:180:5mm);
+\path[fill=black](-0.2,0) arc (0:180:1mm);
+\end{scope}}}]}}
+
+
+
+
+\begin{tcolorbox}[frogbox,title=My title]
+This is a \textbf{tcolorbox}.
+\end{tcolorbox}
+
+
+ 有时候要在Latex中插入代码段，如果直接作为正文插入，则会跟Latex的很多关键字冲突，那么需要用到Verbatim环境，
+
+

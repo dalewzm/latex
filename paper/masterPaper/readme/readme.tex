@@ -1,0 +1,40 @@
+\documentclass[UTF8]{ctexrep}
+\usepackage{note}
+\usepackage[dvipsnames,svgnames]{xcolor}
+\usepackage{pgfkeys}
+\usepackage{tkzexample}
+%\usepackage{tikz-3dplot}
+
+\usepackage{tcolorbox}
+\usepackage{animate}
+\tcbuselibrary{skins}
+\usetikzlibrary{shadings}
+\tcbuselibrary{breakable}
+
+ \usepackage[
+            bookmarksnumbered=true,
+            bookmarksopen=true,
+            colorlinks, %注释掉此项则交叉引用为彩色边框(将colorlinks和pdfborder同时注释掉)
+            pdfborder=001,   %注释掉此项则交叉引用为彩色边框
+            linkcolor=blue,
+            anchorcolor=green,
+            citecolor=green
+            ]{hyperref}  
+
+\includeonly{body/draw}
+
+\begin{document}
+\tableofcontents
+
+
+
+\include{body/chapter01}
+\include{body/chapter02}
+
+\include{body/trick}
+\include{body/draw}
+ MiKTeX 的 Package Manager，还是 TeX Live 的 tlmgr，都比手工安装宏包容易得多。
+没有被 MiKTeX 或 TeX Live 仓库收集的宏包很少见。
+
+\addcontentsline{toc}{chapter}{致谢}
+\end{document}

@@ -1,0 +1,1256 @@
+% !Mode:: "TeX:UTF-8"
+
+\documentclass[DIV=14,fontsize=11,headinclude=false,index=totoc,footinclude=false,headings=small]{tkz-doc} 
+%\usepackage{tkz-linknodes} 
+\usepackage[english]{babel}
+\usepackage[np,autolanguage]{numprint}
+\usepackage{listings}
+\usepackage{microtype}
+\usepackage{shapepar}
+
+\gdef\nameofpack{\LaTeX{} 札记}
+\gdef\versionofpack{1.0}
+\gdef\dateofpack{\today}
+\gdef\nameofdoc{\LaTeX{} 札记}
+\gdef\dateofdoc{\today}
+\gdef\authorofpack{Joseph Pan}
+\gdef\adressofauthor{SCNU}
+
+% 将插图统一放置在figures目录
+\graphicspath{{figures/}}
+
+\title{\LaTeX{} 札记}
+\author{潘伟洲}
+
+\colorlet{graphicbackground}{white}
+\colorlet{codebackground}{blue!10}
+\parindent=0pt
+
+\begin{document}
+  \title{\nameofpack}
+  \date{\today}
+  \clearpage
+  \thispagestyle{empty}
+  \maketitle
+  \newpage
+  \clearpage
+
+  \nameoffile{\nameofpack}
+
+  \defoffile{这是一份针对初学者而编写的 \LaTeX{} 札记。我写这份文档的主要目的是
+    介绍一下 \LaTeX{} 的优点，一些小技巧，还有针对初学者常犯的几个错误，提醒一下
+    他们需要格外引起注意的问题。\\重点将讲讲中文处理，以及使用 JabRef 管理 BibTeX 的
+    方法，这是很多 \LaTeX{} 教程所缺少的内容。\\
+    因此，这份材料不是一份面面俱到的教程，而适合当作其他教程的补充。其他的内容可
+    以参考 \tkzimp{lshort} 或其他教程，里头有更丰富的介绍。\\Anyway，希望这份东
+    西对正在学习 \LaTeX{} 的人有用。$\smiley$\\
+    \textcolor{blue}{Happy \TeX ing!}\\
+  }
+
+\presentation  
+
+\vfill
+\lefthand\ 感谢 \href{http://http://altermundus.com/}{\textcolor{blue}{Alain Matthens}} 写了 tkz-doc，这份文档的风格修改自 \tkzimp{tkzdoc.cls}。
+
+\lefthand\ 感谢 \href{http://www.ctex.org}{\textcolor{blue}{CTeX网站}}、
+\href{http://chinatex.org}{\textcolor{blue}{ChinaTeX网站}} 等相关网站以及
+\href{http://www.hooklee.com/}{\textcolor{blue}{李树钧}}、
+\href{http://docs.huihoo.com/homepage/shredderyin/}{\textcolor{blue}{王垠}}等提
+供的相关资料。
+
+\lefthand\ 文中用到了一些 \href{http://zh.wikipedia.org/wiki/棋
+  魂}{\textcolor{blue}{棋魂}}的漫画图案，纯粹出于我对该漫画的喜爱，棋魂的版权归
+日本《少年JUMP周刊》（集英社）所有。
+
+
+
+\vspace{1cm}
+Please report typos or any other comments to this documentation to
+\href{mailto:cs.wzpan@gmail.com}{\textcolor{blue}{Joseph Pan}}
+This file can be redistributed and/or modified under the terms of the LATEX 
+Project Public License Distributed from CTAN archives in directory \url{CTAN:// 
+macros/latex/base/lppl.txt}. 
+
+ \medskip
+ \begin{center}
+ 	\begin{tikzpicture}[decoration=snake,color=Peach,line width=1pt]
+ 	  \draw[decorate] (0,0)--(\textwidth-1cm,0);
+ 	\end{tikzpicture}
+ \end{center}
+
+ \clearpage
+ \tableofcontents
+
+ \newpage
+
+\setlength{\parindent}{2em}
+
+\section{漫谈(La)TeX}
+
+\subsection{\TeX\ 的诞生与发展}
+\label{sec:history}
+
+七十年代末，Donald E. Knuth（高德纳）在看到其多卷巨著“The Art of Computer
+Programming”第二卷的校样时，对由计算机排版的校样的低质量感到无法忍受。因此决定自
+己来开发一个高质量的计算机排版系统，这样就有了 \TeX。
+
+\begin{figure}[htbp]
+  \centering
+  \rotatebox{-90}{
+  \includegraphics[width=.5\textwidth]{lion.pdf}}
+  \caption{This is \TeX !}
+  \label{fig:lion}
+\end{figure}
+
+\TeX 的源程序是用 Pascal 写成的，原因是 Knuth 希望 \TeX 尽可能方便地移植到其它
+的操作系统中去。当时 Pascal 是最适合于这一要求的编程语言。这也使得 \TeX 现在已经
+在几乎所有的计算机系统中得到实现。
+
+\TeX 的另一个重要的特征就是它的输出是与设备无关的。\TeX 的输出文件称为 DVI 文
+件，即是“Device Independent”。一旦 \TeX 处理了你的文件，你所得到的 DVI 文件就可
+以被送到任何输出设备如打印机，屏幕等并且总会得到相同的结果，而这与这些输出设备的
+限制没有任何关系。这说明 DVI 文件中所有的元素，从页面设置到文本中字符的位置都被
+固定，不能更改。
+
+\subsection{\TeX 趣事}
+\label{sec:faq}
+
+\subsubsection{\TeX 与 $\pi$}
+\label{sec:pi}
+
+\TeX 的第一版于 1978 年面世。在经过了不断的改进后，1982 年版的 \TeX 是一个十分
+稳定的版本。从此以后，\TeX 没有较大的变动，只有很少部分的改进和错误修正。现在几乎
+所有的操作系统平台下，都有相应的 \TeX 软件，而且用它们排版同一个文件得到的输出结
+果是相同的。\TeX 目前的版本是 3.1415926，很接近圆周率π。每有一新的版本，就会加上
+一个π的小数点后的数。所以我们已经知道下一版本的 \TeX 是 3.14159265，最终将收敛到
+π。这也代表了 \TeX 不断追求完美的理想。
+
+\subsubsection{\TeX 支票}
+\label{sec:check}
+
+Knuth 用他自己设计的“文学编程语言” 写了\TeX 的代码，到了正式发行的时候，他非常自
+信的奖励 \$ 1.28 给第一个发现 bug 的人，以后每发现一个 bug, 奖金都会翻倍，最多
+\$ 327.68。后来由于加入了对8字节字符的支持，产生了一些小 bug。从1995年到现在，总
+共只发现一个 bug. 发现 bug 的周期越来越长，而且后来的 bug 都是一些在挑剔的人找出
+来的一些“美学”上的问题了。但是严谨的 Knuth 仍然把它们作为 bug 处理。国内的王垠
+就曾获得他的两张支票。
+
+\subsubsection{冰冻\TeX}
+\label{sec:fronzen}
+
+\TeX 现在已经被它的开发者 Knuth 所“冰封”(frozen)，新版本的 \TeX 只有少许改进
+和错误修正。这些变动必须保证不会使得即使是写于 1982 年的 \TeX 文档无法编译，\TeX
+自带了测试文件来确保这一点。如果测试文件文件的输出结果不同于预定的结果，那么这个
+排版系统就不能够被称为“\TeX”。所以像一些对 \TeX 有很大改进的软件，如“Omega”等
+将不能被称为“\TeX”，尽管它也是基于“\TeX”的。
+
+虽然 \TeX 在过去的二十多年中没有大的变化，但这并不意味着 \TeX 是一个僵化的系统。
+恰恰相反，\TeX 开放的设计使得它能够很容易的适应新的要求。
+
+
+\subsection{\TeX\ 和\LaTeX{}}
+\label{sec:texandlatex}
+
+\LaTeX{} 是一个宏包集,其目的是使作者能够利用一个预先定义好的专业页面设置,从而得以高质
+量地排版和打印他们的作品。它与\TeX 可以说是高层和底层的关系。相关的几个名词有：
+
+\begin{enumerate}
+\item \TeX
+  
+  最基本的 \TeX 程序只是由一些很原始的命令组成，它们可以完成简单的排版操作和程序设计功能。然而，\TeX 也允许用这些原始命令定义一些更复杂的高级命令。这样就可以利用低级的块结构，形成一个用户界面相当友好的环境。
+
+在处理器运行期间，该程序首先读取所谓的格式文件，其中包含各种以原始语言写成的高级命令，也包含分割单词的连字号安排模式。接着处理程序就处理源文件，其中包含要处理的真正文本，以及在格式文件中已定义了的格式命令。
+
+创建新格式是一件需要由具有丰富知识程序员来做的事情。把定义写到一个源文件中，这个
+文件接着被一个名叫 initex 的特殊版本的 \TeX 程序处理。它采用一种紧凑的方式存贮这
+些新格式，这样就可以被通常 \TeX 程序很快地读取。
+
+\item Plain \TeX
+
+Knuth 设计了一个名叫 Plain \TeX 的基本格式，以与低层次的原始 \TeX 呼应。这种格式是用 \TeX 处理文本时相当基本的部分，以致于我们有时都分不清到底哪条指令是真正的处理程序 \TeX 的原始命令，哪条是 Plain \TeX 格式的。大多数声称只使用 \TeX 的人，实际上指的是只用 Plain \TeX 。
+
+Plain \TeX 也是其它格式的基础，这进一步加深了很多人认为 \TeX 和 Plain \TeX 是同一事
+物的印象。
+
+\item \LaTeX{}
+
+Plain \TeX 的重点还只是在于如何排版的层次上，而不是从一位作者的观点出发。对它的深层功能的进一步发掘，需要相当丰富的编程技巧。因此它的应用就局限于高级排版和程序设计人员。
+
+Leslie Lamport 开发的 \LaTeX{} 是当今世界上最流行和使用最为广泛的 \TeX 格式。它构筑在 Plain \TeX 的基础之上，并加进了很多的功能以使得使用者可以更为方便的利用 \TeX 的强大功能。使用 \LaTeX{} 基本上不需要使用者自己设计命令和宏等，因为 \LaTeX{} 已经替你做好了。因此，即使使用者并不是很了解 \TeX ，也可以在短短的时间内生成高质量的文档。对于生成复杂的数学公式，\LaTeX{} 表现的更为出色。
+
+\item \LaTeX{} 2e
+
+\LaTeX{} 自从二十世纪八十年代初问世以来，也在不断的发展。最初的正式版本为 2.09，在经过几年的发展之后，许多新的功能，机制被引入到 \LaTeX{} 中。在享受这些新功能带来的便利的同时，它所伴随的副作用也开始显现，这就是不兼容性。标准的 \LaTeX{} 2.09，引入了“新字体选择框架”(NFSS)的 \LaTeX{}，SLiTeX，AMSLaTeX 等等，相互之间并不兼容。这给使用者和维护者都带来很大的麻烦。
+
+为结束这中糟糕的状况，Frank Mittelbach 等人成立了 \LaTeX{} 3 项目小组，目标是建立一
+个最优的，有效的，统一的，标准的命令集合。即得到 \LaTeX{} 的一个新版本 3。这是一个
+长期目标，向这个目标迈出第一步就是在 1994 年发布的 \LaTeX{} 2e 。\LaTeX{} 2e 采用了 NFSS
+作为标准，加入了很多新的功能，同时还兼容旧的 \LaTeX{} 2.09。\LaTeX{} 2e 每 6 个月更新一
+次，修正发现的错误并加入一些新的功能。在 \LaTeX{} 3 最终完成之前，\LaTeX{} 2e 将是标准的
+\LaTeX{} 版本。
+
+\end{enumerate}
+
+\subsection{\TeX 系统}
+\label{sec:texsystem}
+\NameDist{MikTeX}\NameDist{CTeX}\NameDist{TeXLive}\NameDist{fpTeX}\NameDist{teTeX}
+
+\TeX 系统是集成了编译 (La)TeX 文档所需的软件和宏包的系统。常用的包括：
+
+\begin{enumerate}
+\item MikTeX。MiKTeX 是 Windows 下最好用的 \TeX 系统。网址：
+  \url{http://www.miktex.org} 或 \url{http://miktex.sourceforge.net}
+\item TeXLive。TeXLive 是由国际 \TeX 用户组织 TUG 开发的 \TeX 系统，支持不同的操作系统平台。其 Windows 版本又称 fpTeX ， Unix/Linux 版本即著名的 teTeX 。网址：\url{http://tug.org/texlive/}
+\item CTeX。CTeX 中文套装是基于 Windows 下的 MiKTeX 系统，集成了编辑器 WinEdt 和
+  PostScript 处理软件 Ghostscript 和 GSview 等主要工具。 CTeX 中文套装在 MiKTeX
+  的基础上增加了对中文的完整支持。 CTeX 中文套装支持 CJK, xeCJK, CCT, TY 等多种
+  中文 \TeX 处理方式。网址：\url{http://www.ctex.org}
+\end{enumerate}
+
+\subsection{\TeX 除了编辑论文还能做什么？}
+\label{sec:other}
+
+\TeX 是一个非常多才多艺的程序。它不但可以编辑论文，书籍，幻灯片，学术杂志，个人简
+历，还可以
+编辑乐谱，化学分子图，电路图，国际象棋，中国象棋，甚至围棋棋谱，……事实上只有少
+量文档不适合用 \TeX 编辑。
+
+
+\clearpage
+
+\subsubsection{\LaTeX{} 绘图}
+\NamePack{TikZ}\NamePack{Asymptote}\NamePack{MetaPost}\NamePack{gnuplot}
+\label{sec:draw}
+
+
+\LaTeX{} 可以和很多绘图工具结合，精确地绘制出美妙的图形。你可以看看一些绘图工具的官方
+gallery：
+\begin{enumerate}
+\item TikZ: \url{http://www.texample.net/};
+\item Asymptote: \url{http://asymptote.sourceforge.net/gallery/};
+\item MetaPost: \url{http://tex.loria.fr/prod-graph/zoonekynd/metapost/metapost.html};
+\item gnuplot: \url{http://www.gnuplot.info/screenshots/index.html#demos}
+\end{enumerate}
+
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[类图]{\includegraphics[width=.3\textheight]{class-diagram.pdf}}\qquad%
+  \subfloat[电路图]{\includegraphics[width=.3\textheight]{power-electronics-converter-inverter.pdf}}
+  
+  \subfloat[FFT示意图]{\includegraphics[width=.3\textheight]{radix2fft.pdf}}\qquad%
+  \subfloat[函数图]{\includegraphics[width=.3\textheight]{parabola-plot.pdf}}
+  %\subfloat[根号螺旋图]{\includegraphics[height=.3\textheight]{rooty-helix.pdf}} 
+  %\fubfloat[3D足球]{\includegraphics[width=.3\textheight]{soccerball.pdf}}
+  \caption{\LaTeX{} 绘图}
+  \label{fig:figure}
+\end{figure}
+
+
+\clearpage
+
+\subsubsection{\LaTeX{} 吉他谱}
+\label{sec:guitar}
+
+\LaTeX{} 排版的吉他谱：
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[height=.72\textheight]{gm_david.pdf}
+  \caption{\LaTeX{} 排版的吉他谱}
+  \label{fig:guitar}
+\end{figure}
+
+\clearpage
+
+\subsubsection{\LaTeX{} 的文字特效}
+\label{sec:effect}
+
+\LaTeX{} 可以生成很有趣的文字特效，如图\ref{fig:effect}所示。
+
+\begin{figure}[htbp]
+\begin{center}  
+  \textcolor{magenta}{
+\small
+\begin{minipage}{.5\textwidth}
+\heartpar
+{
+	if i had to live my life without you near me
+	the days would all be empty
+	the nights would seem so long
+	with you i see forever oh so clearly
+	i might have been in love before
+	but it never felt this strong
+	our dreams are young and we both know
+	they'll take us where we want to go
+	hold me now touch me now
+	i don't want to live without you
+	nothing's gonna change my love you for you
+	you oughta know by now how much i love you
+	one thing you can be sure of
+	i never ask for more than your love
+	nothing's gonna change my love for you
+	you oughta know by now how much i love you
+	you'll only chang my whole life throug but
+	nothing's gonna chang my love for you
+}\end{minipage}
+}
+\end{center}
+
+\begin{center}  
+  \textcolor{magenta}{
+\small
+\begin{minipage}{.5\textwidth}
+\starpar
+{
+  一闪一闪亮晶晶 留下岁月的痕迹
+  我的世界的中心 依然还是你
+  一年一年又一年 飞逝仅在一转眼
+  唯一永远不改变 是不停地改变
+  我不像以前的自己 你也有点不像你
+  但在我的眼中你的笑 依然的美丽
+  日子只能往前走 一个方向顺时钟
+  不知道能爱多久 所以要让你懂
+  我依然爱你 就是唯一的退路
+  我依然珍惜 时时刻刻的幸福
+  你每个呼吸 每个动作 每个表情
+  到最后 一定会 依然爱你
+}\end{minipage}
+}
+\end{center}
+
+
+  \caption{\LaTeX{} 可以生成很有趣的文字特效}
+  \label{fig:effect}
+\end{figure}
+
+\vfill\newpage
+
+\section{最简单的文档示例}
+
+先看一个最简单的文档示例：
+
+\begin{tkzexample}[code only,small,num]
+\documentclass{article}
+  % 引言区
+\begin{document}
+  % 正文区
+  Hello \LaTeX{} !
+\end{document}\end{tkzexample}
+
+编译的结果是：
+
+  Hello \LaTeX{} !
+
+\subsection{分析}
+
+\subsubsection{文档类型}
+
+当\LaTeX{} 处理源文件时，首先需要知道的是作者所要创建的文档类型。该信息可以通过命
+令~\verb|\documentclass| 来提供给\LaTeX{} 。
+
+\begin{tkzexample}[code only,small,num]
+\documentclass[options]{class}\end{tkzexample}
+
+\begin{itemize}
+  
+\item 常用的文档类（class）
+\NamePack{article}\NamePack{report}\NamePack{book}\NamePack{letter}\NamePack{slides}\NamePack{minimal}
+\begin{table}[htbp]
+  \centering
+  \caption{文档类}
+  \label{tab:documentclass}
+  \begin{tabular}[c]{lll}
+    \hline
+    类别 & 一般用途 & 特性 \\
+    \hline
+    article & 一般短文& 无章，连续页式的安排，无奇偶数页的区分\\
+    report & 较长论文 & 章会起新页，预设无奇偶数页的区分\\
+    book & 排版书籍 & 章会于奇数页起新页，预设有偶数页的区分\\
+    letter & 信件 & 英文信件格式 \\
+    slides & 排版幻灯片 & 可以用其他宏包取代（如Beamer）\\
+    minimal & 测试及写新类别 & 这是最简单的类别，只规定了内文的宽、高、正常字\\
+    \hline
+  \end{tabular}
+\end{table}
+
+\item 文档类选项（option）
+
+  \NameOpt{a4paper} \NameOpt{letterpaper} \NameOpt{a5paper}\NameOpt{b5paper}\NameOpt{executivepaper}\NameOpt{legalpaper}  \NameOpt{fleqn}  \NameOpt{leqno} \NameOpt{titlepage} \NameOpt{notitlepage} \NameOpt{twoside}
+  \NameOpt{oneside} \NameOpt{openright} \NameOpt{openany}
+  文档类选项可以有多个，选项之间用逗号分隔。
+  
+    \begin{longtable}[c]{cp{20em}}
+      \caption{文档类选项}\label{tab:documentoption}\\
+      \toprule[1.5pt]
+      选项 & 用途 \\
+      \midrule[1pt]
+      \endfirsthead%
+
+      \toprule[1.5pt]
+      选项 & 用途 \\
+      \midrule[1pt]
+      \endhead
+      \hline
+
+      \endfoot
+      \endlastfoot
+      10pt, 11pt, 12pt & 设置文档所使用的字体的大小。如果没有声明任何选项,缺省将使用 10pt 字体。\\
+      a4paper, letterpaper, \ldots & 定义纸张的大小,缺省的设置为letterpaper。此
+      外,还可以使用 a5paper,b5paper,executivepaper 和 legalpaper。\\
+      fleqn & 设置该选项将使数学公式左对齐,而不是中间对齐。\\
+      leqno & 设置该选项将使数学公式的编号放置于左侧。\\
+      titlepage, notitlepage & 指定是否在文档标题(document title)后开始一新页。article 文档类缺省不开始新页,而 book 文档类则相反。\\
+      onecolumn, twocolumn & 指定 \LaTeX{} 以单列(one column)或双列(two column)方
+      式排版文档。\\
+      twoside, oneside & 指定 \LaTeX{} 排版的文档为双面或单面格式。article 和 report 缺省使用单面格式,而 book 则缺省使用双面格式。需要注意的是该选项仅作用于文档的式样。twoside 选项不会通知你的打印机让以得到双面的打印输出。\\
+      openright, openany & 此选项决定新的章是仅仅在右边页(奇数页)还是在下一可用
+      页开始。该选项对 article 文档类不起作用,因为该类中并没有定义“章”(Chapter)。
+      report 类中新的一章 开始于下一可用页,而 book 类中新的一章总是开始于右边页。\\
+      \bottomrule[1.5pt]
+    \end{longtable}
+
+  \end{itemize}
+  
+  \subsubsection{引言（preamable）}
+  \label{premable}
+
+  在 \verb|\documentclass| 语句和 \verb|\begin{document}| 之间的区域称为 \tkzimp{引言区
+    （premable）}，这里可以通过 \verb|\usepackage| 语句引入一些宏包，或者定义一些
+    全局的命令和格式。
+
+    \vfill\newpage
+    
+\section{几个小技巧}
+\label{sec:skill}
+
+\subsection{获取帮助}
+\label{sec:help}
+
+要获取对某个宏包的帮助，可以使用 \tkzimp{texdoc} 命令，该命令将为你打开该宏包的
+帮助文档。试试打开 Windows 下的 CMD 或者 Linux 下的终端，然后输入以下命令：
+
+\begin{tkzexample}[code only,small,num]
+  texdoc xetex\end{tkzexample}
+
+你可以把“xetex”换成其他你想要获取帮助的宏包。
+
+\subsection{编译当前一小段}
+\label{sec:piece}
+
+只对选中的一小段进行编译，这样不仅能节省时间，尽快看到新增内容的编译结果，还有助于检查语法错误。
+
+在 WinEdt 中编译一小段的方法很简单：
+
+\begin{enumerate}
+\item 选中要编译的TEX代码
+\item 选择 Accessories $\rightarrow$ Compile Selected，(快捷键 $\Ctrl + \Shift$ + C)
+\item 会弹出 \LaTeX{} 编译后的效果
+\end{enumerate}
+
+\subsection{清理辅助文件}
+\label{sec:clean}
+
+\LaTeX{} 文档在编译时会产生很多辅助文件，这些文件不是我们直接需要的pdf文档，所以
+可以清理掉。
+
+两种方法：
+
+\begin{enumerate}
+\item 点击 WinEdt 的回收站图标,可以选择把 \LaTeX{} 生成的辅助文件删除,方便快捷。
+\item 将以下文本另存为 clean.bat 文件,放在源文件夹中,双击即可。清除的文件还包括
+  子文件夹。
+
+  \begin{tkzexample}[code only,small,num]
+del *.aux /s
+del *.bak /s
+del *.log /s
+del *.bbl /s
+del *.dvi /s
+del *.blg /s
+del *.thm /s
+del *.toc /s
+del *.out /s  \end{tkzexample}
+
+\end{enumerate}
+
+\subsection{注释}
+\label{sec:comment}
+
+\subsubsection{单行注释（\%）}
+
+  当 \LaTeX{} 在处理源文件时,如果遇到一个百分号字符 \%\footnote{\% 也可以用来分割不
+    允许有空格或分行的较长输入文本。}，那么 \LaTeX{} 将忽略 \% 后的该行文本,分行符以
+  及下一行开始的空白字符。这样,我们就可以在源文件中写一些注释,而不会担心他们会出
+  现在最后的排版结果中。
+
+\begin{tkzexample}[code only,small,num]
+This is an % stupid
+% Better: instructive <----
+example: Supercal%
+         ifragilist%
+icexpialidocious\end{tkzexample}
+
+编译结果：\\
+This is an % stupid
+% Better: instructive <----
+example: Supercal%
+ifragilist%
+icexpialidocious
+
+\subsubsection{多行注释}
+\NameCmd{iffalse}\NameCmd{fi}
+  如果需要较长的注释，可以在要注释的两段代码之间加上 $\backslash$iffalse \ldots
+    $\backslash$fi，例如：\\
+\begin{tkzexample}[code only,small,num]
+这是另一个
+\iffalse
+非常笨拙的,
+然而却很有效。
+\fi
+在你的文档中
+使用注释的例子。\end{tkzexample}
+
+编译结果：
+
+这是另一个
+\iffalse
+非常笨拙的,
+然而却很有效。
+\fi
+在你的文档中
+使用注释的例子。
+
+\subsection{英文断字的处理}
+\label{sec:breakword}
+
+必要时就会出现断字。如果断字算法不能确定正确的断字点,可以使用几种方法告诉 \TeX 如
+何弥补这个缺憾。
+
+\subsubsection{使用命令 $\backslash$hyphenation}
+\NameCmd{hyphenation}
+\begin{tkzexample}[code only,small]
+\hyphenation{word list}\end{tkzexample}
+
+使列于参量中的单词仅在注有“-”的点断字。命令的参量仅由正常字母构
+成的单词,或由激活文本中视为正常字母的符号组成。应用于(特殊)语
+言的已存好,当断字命令出现时,就为激活的语言储存断字可选点。这意
+味着如果你在文档导言中设置了断字命令,它将影响英文的断字。如果断
+字命令置于 \verb|\begin{document}| 后面,而且你正使用类似 babel 的国际语言
+支持宏包,那么断字可选点在由 babel 激活的语言中就处于活动状态。
+
+下面的例子允许对 “hyphenation” 和 “Hyphenation” 进行断字,却根本
+不允许 “FORTRAN”, “Fortran” 和 “fortran” 进行断字。在参量中不允许出
+现特殊的字符和符号。
+
+\begin{tkzexample}[code only,small,num]
+\hyphenation{FORTRAN Hy-phen-a-tion}\end{tkzexample}
+
+命令 \verb|\-| 在单词中插入一个自主的断字点。它也就成为这个单词中允许出现的唯一断
+字点。对于包含特殊字符(注音字符)的单词,这个命令是特别有用的,因为对于包含特殊字符
+的单词 \LaTeX{} 不自动断字。
+
+\begin{tkzexample}[code only,small,num]
+  I think this is: su\-per\-cal\-%
+i\-frag\-i\-lis\-tic\-ex\-pi\-%
+al\-i\-do\-cious\end{tkzexample}
+
+编译结果是：
+
+  I think this is: su\-per\-cal\-%
+i\-frag\-i\-lis\-tic\-ex\-pi\-%
+al\-i\-do\-cious
+
+\subsubsection{使用盒子}
+
+\NameCmd{mbox}\NameCmd{fbox}
+
+使用盒子也可以保证把几个单词排在同一行上。所谓“盒子”，就是把放在盒子里面的对象
+（小到一个字母，大到一个段落）当成一个整体来对待，这样，这个盒子就和一个字母一样
+具有了不可分割的原子性。
+
+最简单的盒子命令是 \verb|\mbox| 和 \verb|\fbox|。前者把一组对象组合起来,后者在此
+基础上加了个边框。例如：
+
+\begin{tkzexample}[code only,small,num]
+My phone number will change soon.
+It will be \mbox{0116 291 2319}.
+
+The parameter
+\fbox{\emph{filename}} should
+contain the name of the file.\end{tkzexample}
+
+编译结果是：
+
+My phone number will change soon.
+It will be \mbox{0116 291 2319}.
+
+The parameter
+\fbox{\emph{filename}} should
+contain the name of the file.
+
+\verb|\fbox| 还常常用来给插图加上边框，这个将在\ref{sec:box}讨论。
+
+\subsection{断行和分页}
+\NameCmd{\textbackslash }\NameCmd{\textbackslash *}\NameCmd{newpage}
+\label{sec:breakline}
+\begin{itemize}
+\item 另起一段：
+  在两段文字之间空一行空行。
+\item 另起一行，而不另起一段：
+  \begin{tkzexample}[code only,small]
+\\ or \newline \end{tkzexample}
+\item 在强行段行后，还禁止分页：
+  \begin{tkzexample}[code only,small]
+\\* \end{tkzexample}
+\item 另起一新页：
+  \begin{tkzexample}[code only,small]
+\newpage \end{tkzexample}
+\end{itemize}
+
+\subsection{插图技巧}
+\label{sec:figure}
+
+\subsubsection{插图方法}
+\NameEnv{figure}
+\NamePack{graphicx}\NamePack{float}\NameCmd{includegraphics}\NameOpt{H}\NameOpt{htbp}
+\NameCmd{caption}\NameCmd{label}
+引入 \tkzimp{graphicx} 宏包后，使用 ~\verb|\includegraphics{file}| 命令可以插入图
+片文件。在期刊写作中，插图常常需要放在 \tkzimp{figure} 浮动体中。之所以称为浮动是
+指最终排版效果图形的位置不一定与源文件中的位置对应，这也是刚使用 \LaTeX{} 同学可
+能遇到的问题。如果要强制固定浮动图形的位置，请使用 \textsf{float} 宏包，它提供
+了 \texttt{[H]} 参数，但是除非特别需要，不建议使用\texttt{[H]}，而是倾向于使
+用 \texttt{[htbp]}，给\LaTeX{}更多选择。例如：
+
+\begin{tkzexample}[code only,small,num]
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\textwidth]{tyzw.jpg}
+    \caption{藤原~佐为}
+    \label{fig:ty}
+  \end{figure}\end{tkzexample}
+
+编译结果见图\ref{fig:ty}。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=.6\textwidth]{tyzw.jpg}
+    \caption{藤原~佐为}
+    \label{fig:ty}
+  \end{figure}
+
+  对于插图比较多的文档，可以统一将插图放在一个figures目录，以方便管理。将下面这
+  句话放在引言区：
+\NameCmd{graphicspath}
+  \begin{tkzexample}[code only,small,num]
+\graphicspath{{figures/}}\end{tkzexample}
+
+\subsubsection{多个图形}
+\label{sec:multifig}
+\NameEnv{minipage}\NameEnv{parbox}\NamePack{subfigure}\NamePack{subfig}\NameCmd{subfloat}\NameCmd{subfigure}\NameCmd{subtable}
+如果多个图形相互独立，并不共用一个图形计数器，那么用 \verb|minipage| 或者
+\verb|parbox| 就可以。否则，请参看图~\ref{fig:big1}，它包含两个小图，分别是图~\ref{fig:subfig1} 
+和图~\ref{fig:subfig2}。推荐使用 \verb|subfig| 宏包，它提供 \verb|\subfloat| 命
+令，不要再用\verb|\subfigure| 和 \verb|\subtable|。
+\begin{tkzexample}[code only,small,num]
+\begin{figure}[htb]
+  \centering%
+  \subfloat[第一个小图形]{%
+    \label{fig:subfig1}
+    \includegraphics[height=3cm]{jtg.jpg}}\hspace{4em}%
+  \subfloat[第二个小图形。如果标题很长的话，它会自动换行，这个 caption 就是这样的例子]{%
+    \label{fig:subfig2}
+    \includegraphics[height=3cm]{tsl.jpg}}
+  \caption{包含子图形的大图形}
+  \label{fig:big1}
+\end{figure}\end{tkzexample}
+
+编译结果见图\ref{fig:big1}。
+
+\begin{figure}[htb]
+  \centering%
+  \subfloat[第一个小图形]{%
+    \label{fig:subfig1}
+    \includegraphics[height=3cm]{jtg.jpg}}\hspace{4em}%
+  \subfloat[第二个小图形。如果标题很长的话，它会自动换行，这个 caption 就是这样的例子]{%
+    \label{fig:subfig2}
+    \includegraphics[height=3cm]{tsl.jpg}}
+  \caption{包含子图形的大图形}
+  \label{fig:big1}
+\end{figure}
+
+下面这个例子显示并排$3\times2$的图片：
+
+\begin{tkzexample}[code only,small,num]
+\begin{figure}[htb]
+\centering
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}}
+\caption{并排图片}
+\label{fig:subfig:3x2}
+\end{figure}\end{tkzexample}
+
+编译结果见图\ref{fig:subfig:3x2}：
+
+\begin{figure}[htb]
+\centering
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}} \qquad
+\subfloat[]{\includegraphics[width=.27\textwidth]{qh2.jpg}}
+\caption{并排图片}
+\label{fig:subfig:3x2}
+\end{figure}
+
+\subsubsection{旋转和缩放图案}
+\label{sec:rotate}
+
+\NamePack{scalebox}\NameOpt{angle}
+
+通过使用~\verb|\includegraphics| 的 \tkzimp{angle} 选项可以旋转图片。如果要缩放
+图片，可以通过 \tkzimp{scalebox} 环境来实现，例如：
+
+\begin{tkzexample}[code only,small,num]
+\begin{figure}
+\centering
+\subfloat[原始图像]{\includegraphics{tyzw2}}
+\subfloat[旋转$30^{\circ}$]{\begin{minipage}[b]{.3\linewidth}\in-cludegraphics[origin=c,angle=30]{tyzw2}\end{minipage}}\qquad%
+\subfloat[水平翻转]{\begin{minipage}[b]{.3\linewidth}\scalebox{-1}[1]{\in-cludegraphics{tyzw2}}\end{minipage}}
+\subfloat[垂直翻转]{\begin{minipage}[b]{.3\linewidth}\scalebox{1}[-1]{\in-cludegraphics{tyzw2}}\end{minipage}}
+\subfloat[缩放(0.5,1.2)]{\begin{minipage}[b]{.3\linewidth}\scalebox-{0.5}[1.2]{\includegraphics{tyzw2}}\end{minipage}}
+\end{figure}
+\caption{旋转和缩放图案示例}
+\label{fig:tyzw2}\end{tkzexample}
+
+编译结果见图\ref{fig:tyzw2}。
+
+\begin{figure}
+\centering
+\subfloat[原始图像]{\includegraphics{tyzw2}}
+\subfloat[旋转$30^{\circ}$]{\begin{minipage}[b]{.3\linewidth}\includegraphics[origin=c,angle=30]{tyzw2}\end{minipage}}\qquad%
+\subfloat[水平翻转]{\begin{minipage}[b]{.3\linewidth}\scalebox{-1}[1]{\includegraphics{tyzw2}}\end{minipage}}
+\subfloat[垂直翻转]{\begin{minipage}[b]{.3\linewidth}\scalebox{1}[-1]{\includegraphics{tyzw2}}\end{minipage}}
+\subfloat[缩放
+(0.5,1.2)]{\begin{minipage}[b]{.3\linewidth}\scalebox{0.5}[1.2]{\includegraphics{tyzw2}}\end{minipage}}
+\caption{旋转和缩放图案示例}
+\label{fig:tyzw2}
+\end{figure}
+
+\subsubsection{给图像加边框}
+\label{sec:box}
+
+\NameOpt{\textbackslash fboxsep}\NameOpt{\textbackslash fboxrule} 
+
+使用~\verb|\fbox|可以给图像加边框，可以设置~\verb|fboxsep| 和~\verb|\fboxrule|
+来分别调整边框边距和粗细。例如：
+
+\begin{tkzexample}[code only,small,num]
+\begin{figure}
+\centering
+\setlength{\fboxsep}{0pt}
+\subfloat[加边框图像]{\fbox{\includegraphics{tyzw2}}}
+\setlength{\fboxrule}{10pt}
+\subfloat[10pt粗的边框效果]{\fbox{\includegraphics{tyzw2}}}
+\caption{加边框图像}
+\label{fig:boxedfigures}
+\end{figure}\end{tkzexample}
+
+编译结果见图\ref{fig:boxedfigures}。
+
+\begin{figure}
+\centering
+\setlength{\fboxsep}{0pt}
+\subfloat[内边距为0的加框图像]{\fbox{\includegraphics{tyzw2}}}
+\setlength{\fboxrule}{10pt}
+\subfloat[10pt粗的边框效果]{\fbox{\includegraphics{tyzw2}}}
+\caption{加边框图像}
+\label{fig:boxedfigures}
+\end{figure}
+
+\NamePack{fancybox}\NameCmd{ovalbox}\NameCmd{doublebox}\NameCmd{shadowbox}\NameCmd{Ovalbox}
+
+通过引用 \tkzimp{fancybox} 宏包，还可以使用更多的盒子来实现更丰富的边框效果，可选
+的盒子包括：
+
+\ovalbox{小圆角盒子} \Ovalbox{大圆角盒子} \doublebox{双线盒子} \shadowbox{阴影盒子} 
+
+例如：
+
+\begin{tkzexample}[code only,small,num]
+\begin{figure}
+\centering
+\subfloat[小圆角盒子]{\ovalbox{\includegraphics{tyzw2}}}
+\setlength{\fboxrule}{.4pt}
+\subfloat[阴影盒子]{\shadowbox{\includegraphics{tyzw2}}}
+\caption{更多边框效果}
+\label{fig:fancyboxedfigures}
+\end{figure}\end{tkzexample}
+
+编译结果见图\ref{fig:fancyboxedfigures}。
+
+\begin{figure}
+\centering
+\subfloat[小圆角盒子]{\ovalbox{\includegraphics{tyzw2}}}
+\setlength{\fboxrule}{.4pt}
+\subfloat[阴影盒子]{\shadowbox{\includegraphics{tyzw2}}}
+\caption{更多边框效果}
+\label{fig:fancyboxedfigures}
+\end{figure}
+
+\vfill\newpage
+\section{初学者要注意的地方}
+\label{sec:mistakes}
+
+\subsection{特殊字符}
+\label{sec:special}
+
+\textcolor{red}{\tkzimp{当心！！！}}下面的这些字符是 \LaTeX 的保留字符,它们或在 \LaTeX 中有特定的用处,或不一定包含在
+所有的字库中。如果你直接在文本中使用它们,通常在排版结果中将不会得到这些字符,而且
+还会导致 \LaTeX 做一些你不希望发生的事情。
+
+\begin{verbatim}
+   # $ % ^ & _ { } ~ \
+\end{verbatim}
+
+大部分特殊字符在前面加上反斜线“$\backslash$”,就可以在文本中得到它们。但对于反斜
+线“$\backslash$”，要得到它，可以使用~\verb|$\backslash$|。
+
+\subsection{标点符号}
+\label{sec:biaodian}
+
+\subsubsection{引号}
+
+\begin{itemize}
+\item 英文引号\\
+  \textcolor{red}{\tkzimp{这个是初学者最容易犯的错误之一！！！}} 在 \LaTeX 中，英
+文的引号 \tkzimp{不能} 通过直接输入"来得到。在 \LaTeX 中，左边的引号是 grave
+accent，是键盘左上方 $\Esc∗$  或 $\keystroke{F1}$ 下方有波形号的那一个键；右边的
+是 apostrophe，也就是主键盘区的 $\Enter∗$ 键隔壁的那个键。双引号的情形是键入两次
+的左单引号以及两次的右单引号，而不是用"这个一次完成两个点的 ditto marks。示例：
+
+\begin{tkzexample}[code only,small,num]
+Please press an ‘Esc’ key.\\
+Please press an ’Esc’ key. 这是错误示范!\\
+‘‘This sentence.’’\\
+"This sentence." 这是错误示范!\end{tkzexample}
+
+编译结果是：
+
+Please press an ‘Esc’ key.\\
+Please press an ’Esc’ key. 这是错误示范!\\
+‘‘This sentence.’’\\
+"This sentence." 这是错误示范!\\
+\item 中文引号\\
+  英文引号的问题在中文排版中则不存在，因为中文使用全角标点。所以在 \LaTeX 中输入双引
+  号时，只需要依次输入`“'和`”'即可。
+\end{itemize}
+
+\subsubsection{省略号}
+\label{sec:ldots}
+
+\NameCmd{ldots}\NameCmd{dots}
+
+\begin{itemize}
+\item 英文省略号\\
+  英文的省略号是三点，如果碰到句号的话，就是四点。但是英文的这个三点不能直接打三
+  个句号就完事，否则这样打出来的省略号会显得太过密集。可以使用 \verb|\ldots| 或
+  \verb|\dots|指令，例如：
+  \begin{tkzexample}[code only,small,num]
+I’m not a good man ..., but a good husband .... 错误示范!\\
+I’m not a good \ldots\ man \ldots, but a good husband \ldots.\\
+I’m not a good \dots\ man \dots, but a good husband \dots.\end{tkzexample}
+
+编译结果是：
+
+I’m not a good ... man ..., but a good husband .... 错误示范!\\
+I’m not a good . . . man . . . , but a good husband . . . .\\
+I’m not a good . . . man . . . , but a good husband . . . .
+\item 中文省略号\\
+  中文省略号是六点，同样由于是全角字符，所以直接输入`……'即可。
+\end{itemize}
+
+\subsubsection{破折号}
+\label{sec:pozhehao}
+
+\begin{itemize}
+\item 英文破折号\\
+  \LaTeX 中右四种短划标点符号。连续用不同数目的短划,可以得到其中
+的三种。第四个实际不是标点符号,它是数学中的减号:
+\begin{tkzexample}[code only,small,num]
+daughter-in-law, X-rated\\
+pages 13--67\\
+yes---or no? \\
+$0$, $1$ and $-1$\end{tkzexample}
+
+编译结果是：
+
+daughter-in-law, X-rated\\
+pages 13--67\\
+yes---or no? \\
+$0$, $1$ and $-1$
+
+\item 中文破折号\\
+  中文的破折号比较特殊，可以通过画一条长为两个字宽（2em）的线来实现。为了方便处
+  理，可以专门定义一个破折号的命令，将这一句话
+\begin{tkzexample}[code only,small]
+\newcommand{\pozhehao}{\kern0.3ex\rule[0.8ex]{2em}{0.1ex}\kern0.3ex}\end{tkzexample}
+  放在引言区\ref{premable}里，然后在文中需要用破折号的地方直接使
+  用~\verb|\pozhehao| 来插入一个中文破折号。例如：
+
+  \begin{tkzexample}[code only,small,num]
+艰苦奋斗、严谨治学、求实创新、为人师表\hfill \pozhehao{}华南师范大学校训\end{tkzexample}
+
+编译结果是：
+
+艰苦奋斗、严谨治学、求实创新、为人师表\hfill \pozhehao{}华南师范大学校训
+
+\end{itemize}
+
+\subsubsection{波浪号（$\sim$）}
+\label{sec:wave}
+
+比较常用的波浪号 $\sim$ 通常使用 \verb|$\sim$| 产生。注意使用 \verb|\~| 产生的是
+比较小的波浪号 \~{} 。
+
+\subsubsection{度的符号（$\circ$）}
+
+可以通过下面的语句得到这个符号，本质上就是绘制一个上标形式的圆圈（\verb|$\circ$|）：
+
+\begin{tkzexample}[code only,small,num]
+Its $-30\,^{\circ}\mathrm{C}$,
+I will soon start to
+super-conduct.\end{tkzexample}
+
+编译结果是：
+
+Its $-30\,^{\circ}\mathrm{C}$,
+I will soon start to
+super-conduct.
+
+\subsubsection{数学符号}
+\label{sec:math}
+
+如果从其它地方拷贝文字，\textcolor{red}{\tkzimp{一定不要忘记把数学符号改成
+    \LaTeX{} 下的形式}}，否则编译后这些符号可能变得不可见。
+
+\vfill\newpage
+\section{中文处理}
+\NamePack{xeCJK}
+推荐使用 \tkzimp{xeCJK} 来处理中文，首先需要在引用区加入下面的命令：
+
+\begin{tkzexample}[code only,small,num]
+\RequirePackage[CJKnumber,CJKtextspaces,CJKmathspaces,no--math,BoldFont,Slant-Font]{xeCJK}
+\RequirePackage{indentfirst}
+\RequirePackage[numbers,sort&compress,square]{natbib}
+\defaultfontfeatures{Mapping=tex-text}
+\xeCJKsetcharclass{"0}{"2E7F}{0}
+\xeCJKsetcharclass{"2E80}{"FFFF}{1}\end{tkzexample}
+
+然后需要配置中文字体，推荐使用Adobe的字体方案：
+
+\begin{tkzexample}[code only,small,num]
+\setmainfont{Times New Roman} 
+\setsansfont{Arial}
+\setmonofont{Courier New}
+\setCJKmainfont[BoldFont={Adobe Heiti Std},ItalicFont={Adobe Kaiti Std}]{Ado-be Song Std}
+\setCJKsansfont{Adobe Heiti Std}
+\setCJKmonofont{Adobe Kaiti Std}
+\setCJKfamilyfont{song}{Adobe Song Std}
+\setCJKfamilyfont{hei}{Adobe Heiti Std}
+\setCJKfamilyfont{fs}{Adobe Fangsong Std}
+\setCJKfamilyfont{kai}{Adobe Kaiti Std}
+\setCJKfamilyfont{li}{Adobe Kaiti Std}
+\setCJKfamilyfont{you}{Adobe Kaiti Std}
+
+\newcommand{\song}{\CJKfamily{song}}    % 宋体
+\newcommand{\fs}{\CJKfamily{fs}}        % 仿宋体
+\newcommand{\kai}{\CJKfamily{kai}}      % 楷体
+\newcommand{\hei}{\CJKfamily{hei}}      % 黑体
+\newcommand{\li}{\CJKfamily{li}}        % 隶书
+\newcommand{\you}{\CJKfamily{you}}      % 幼圆
+\def\songti{\song}
+\def\fangsong{\fs}
+\def\kaishu{\kai}
+\def\heiti{\hei}
+\def\lishu{\li}
+\def\youyuan{\you}\end{tkzexample}
+
+之后可以设置中文的字体大小方案，这里使用了清华大学薛瑞尼的设置：
+
+\begin{tkzexample}[code only,small,num]
+\newlength\thu@linespace
+\newcommand{\thu@choosefont}[2]{%
+    \setlength{\thu@linespace}{#2*\real{#1}}%
+    \fontsize{#2}{\thu@linespace}\selectfont}
+\def\thu@define@fontsize#1#2{%
+    \expandafter\newcommand\csname #1\endcsname[1][\baselinestretch]{%
+    \thu@choosefont{##1}{#2}}}
+\thu@define@fontsize{chuhao}{42bp}
+\thu@define@fontsize{xiaochu}{36bp}
+\thu@define@fontsize{yihao}{26bp}
+\thu@define@fontsize{xiaoyi}{24bp}
+\thu@define@fontsize{erhao}{22bp}
+\thu@define@fontsize{xiaoer}{18bp}
+\thu@define@fontsize{sanhao}{16bp}
+\thu@define@fontsize{xiaosan}{15bp}
+\thu@define@fontsize{sihao}{14bp}
+\thu@define@fontsize{banxiaosi}{13bp}
+\thu@define@fontsize{xiaosi}{12bp}
+\thu@define@fontsize{dawu}{11bp}
+\thu@define@fontsize{wuhao}{10.5bp}
+\thu@define@fontsize{xiaowu}{9bp}
+\thu@define@fontsize{liuhao}{7.5bp}
+\thu@define@fontsize{xiaoliu}{6.5bp}
+\thu@define@fontsize{qihao}{5.5bp}
+\thu@define@fontsize{bahao}{5bp}\end{tkzexample}
+
+除此之外，还可以对将图、表等页面元素中文化：
+
+\begin{tkzexample}[code only,small,num]
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}\end{tkzexample}  
+
+完成配置之后，就可以灵活使用各种字体：
+
+\begin{tkzexample}[code only,small,num]
+华南师范大学历史上的名字包括：
+
+\begin{itemize}
+\item[楷体] {\kai 广州市立师范学校}
+\item[黑体] {\hei 勷勤大学师范学院}
+\item[隶书] {\li 勷勤大学教育学院}
+\item[宋体] {\song 广东省立教育学院}
+\item[仿宋] {\fs 广东省立文理学院}
+\item[粗体] {\bfseries 广东省文理学院}
+\item[斜体] {\itshape 华南师范学院}
+\item[粗斜体] {\bfseries\itshape 广东师范学院}
+\item[字体颜色] {\textcolor{red}{华南师范大学}}
+\end{itemize}\end{tkzexample}
+
+华南师范大学历史上的名字包括：
+
+\begin{itemize}
+\item[楷体] {\kai 广州市立师范学校}
+\item[黑体] {\hei 勷勤大学师范学院}
+\item[隶书] {\li 勷勤大学教育学院}
+\item[宋体] {\song 广东省立教育学院}
+\item[仿宋] {\fs 广东省立文理学院}
+\item[粗体] {\bfseries 广东省文理学院}
+\item[斜体] {\itshape 华南师范学院}
+\item[粗斜体] {\bfseries\itshape 广东师范学院}
+\item[字体颜色] {\textcolor{red}{华南师范大学}}
+\end{itemize}
+
+上面这段内容使用了itemize列表环境，\LaTeX{}默认的列表环境会在条目之间插入
+过多的行距，若用户需要紧凑的行距，可以使用compactitem环境。
+
+下面测试英文字体：
+
+\begin{tkzexample}[code only,small,num]
+Remember the \textsf{more} \textbf{font} {\bfseries\tiny you \sffamily use,
+\Large the \scshape more \itshape beautiful \slshape your \footnotesize
+document becomes.}
+
+\begin{itemize}
+\item[英文黑体] Typeset text in \textbf{bold} series
+\item[英文斜体] Typeset text in \textit{italic} shape
+\item[Roman字体] Typeset text in roman family
+\item[Sans Serif字体] Typeset text in \textsf{sans serif} family
+\item[typewriter字体] Typeset text in \texttt{typewriter} family
+\end{itemize}\end{tkzexample}
+
+Remember the \textsf{more} \textbf{font} {\bfseries\tiny you \sffamily use,
+\Large the \scshape more \itshape beautiful \slshape your \footnotesize
+document becomes.}
+
+\begin{itemize}
+\item[英文黑体] Typeset text in \textbf{bold} series
+\item[英文斜体] Typeset text in \textit{italic} shape
+\item[Roman字体] Typeset text in roman family
+\item[Sans Serif字体] Typeset text in \textsf{sans serif} family
+\item[typewriter字体] Typeset text in \texttt{typewriter} family
+\end{itemize}
+
+下面测试字号：
+
+\begin{tkzexample}[code only,small,num]
+\begin{itemize}
+\item[初号] {\chuhao 华南师范大学}
+\item[小初] {\xiaochu 华南师范大学}
+\item[一号] {\yihao 华南师范大学}
+\item[小一] {\xiaoyi 华南师范大学}
+\item[二号] {\erhao 华南师范大学}
+\item[小二] {\xiaoer 华南师范大学}
+\item[三号] {\sanhao 华南师范大学}
+\item[小三] {\xiaosan 华南师范大学}
+\item[四号] {\sihao 华南师范大学}
+\item[小四] {\xiaosi 华南师范大学}
+\item[五号] {\wuhao 华南师范大学}
+\item[小五] {\xiaowu 华南师范大学}
+\end{itemize}\end{tkzexample}
+
+\begin{itemize}
+\item[初号] {\chuhao 华南师范大学}
+\item[小初] {\xiaochu 华南师范大学}
+\item[一号] {\yihao 华南师范大学}
+\item[小一] {\xiaoyi 华南师范大学}
+\item[二号] {\erhao 华南师范大学}
+\item[小二] {\xiaoer 华南师范大学}
+\item[三号] {\sanhao 华南师范大学}
+\item[小三] {\xiaosan 华南师范大学}
+\item[四号] {\sihao 华南师范大学}
+\item[小四] {\xiaosi 华南师范大学}
+\item[五号] {\wuhao 华南师范大学}
+\item[小五] {\xiaowu 华南师范大学}
+\end{itemize}
+
+\vfill\newpage
+\section{参考文献}
+\label{sec:reference}
+
+\NameCmd{cite}
+
+在 \LaTeX{} 下管理参考文献将极其方便，建议使用 \href{http://jabref.sourceforge.net/}{\textcolor{blue}{Jabref}} 生成条目，
+用 \verb|\cite| 或者 \verb|upcite| (其中 \verb|upcite| 是上标索引)索引即可。
+
+\subsection{JabRef简介}
+\label{sec:jabref}
+
+JabRef是一个用Java开发的文献库管理软件，用LaTeX写论文的时候与它配合是妙不可言的。
+官方主页在：\url{http://jabref.sourceforge.net}。运行它需要先安装了 \href{http://java.com/en/download/index.jsp}{\textcolor{blue}{Java运行环境}}。
+
+启动JabRef后，第一步是给你的论文创建一个文献库。输入$\Ctrl$ + N 组合键，或者点击
+【File】$\rightarrow$ 【New Database】，新建一个文献库。建议保存在论文同一个目录
+下，名字随意，例如 \verb|refs.bib| 。
+
+\subsection{利用Google Scholar获取BibTeX}
+\label{sec:peihe}
+
+建议养成一边阅读文献一边维护文献库的好习惯。当看到有用的文献材料，就将它的
+\verb|BibTeX| 保存下来，导入 JabRef 生成条目。这样，当你需要引用文献的时候，就
+可以很方便地通过 Bibtexkey 来引用该文献对应的条目，而不需要自己编写 BibItem。
+
+\href{http://scholar.google.com}{\textcolor{blue}{Google Scholar}}是一个强大的文献检索工具，可以很方便的获得检索结果的 BibTeX 。但
+需要对 Google Scholoar 进行设置。进入 Google Scholar 后，首先点击页面右上角的
+“Settings”图标进入设置，在页面最下方的“Bibliography manager”中，勾选“Show
+links to import citations into BibTeX”选项。如图\ref{fig:scholar1}所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.9\textwidth]{scholar.png}
+  \caption{设置Google Scholar}
+  \label{fig:scholar1}
+\end{figure}
+
+完成后点击“保存”按钮回到 Google
+scholar主页，此时会发现文献检索结果中会多出一个【import into BibTeX】选项，如图
+\ref{fig:scholar2}所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\textwidth]{scholar2.png}
+  \caption{import into BibTeX}
+  \label{fig:scholar2}
+\end{figure}
+
+点击进去可以看到该文献的 BibTeX 内容，将该内容保存成一个文件。然后在JabRef中按
+$\Ctrl + $ 组合键导入该文件。也可以直接复制这段内容，然后在JabRef中按 $\Ctrl +
+\Shift$ + N 组合键打开一个新建条目窗口，然后把这段内容粘贴进去。如图
+\ref{fig:paste}所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.5\textwidth]{paste.png}
+  \caption{新建条目并粘贴BibTeX信息}
+  \label{fig:paste}
+\end{figure}
+
+导入成功后，新建的文献条目将会以浅绿色高亮显示。如果有需要，还可以双击该条目进
+行编辑，甚至还可以为它添加若干个文件链接，将该文献条目与对应的论文的路径连接起来，
+从而形成一个名副其实的文献管理库。
+
+\subsection{在 \LaTeX{} 中引用文献}
+\label{sec:refbibtex}
+
+在 \LaTeX{} 中引用文献很简单，只需要完成两步设置：
+
+\NameCmd{bibliographystyle}\NameCmd{bibliography}
+
+\begin{tkzexample}[code only,small,num]
+  \bibliographystyle{xxx}
+  \bibliography{yyy}\end{tkzexample}
+
+其中，\verb|\bibliographystyle| 设置引用样式，常用的“xxx”是引用样式的名字，该
+值可以是 \verb|plain|、\verb|abbrv|、\verb|siam|、\verb|alpha| 或者表
+\ref{tab:ref}列举的各种引用样式。
+
+\begin{table}[htbp]
+  \centering
+  \caption{各种引用格式一览表}
+  \label{tab:ref}
+  \begin{tabular}[c]{lllll}
+    \hline
+    1: ieeetr & 2: unsrt & 3: IEEE & 4: ama & 5: cj\\
+    6: nar & 7: nature & 8: phjcp & 9: is-unsrt	& 10: plain \\
+    11: abbrv & 12: acm & 13: siam & 14: jbact & 15: amsplain\\
+    16: finplain & 17: IEEEannot & 18: is-abbrv	& 19: is-plain & 20: annotation\\
+    21: plainyr & 22: decsci & 23: jtbnew & 24: neuron & 25: cell \\
+    26: jas99 & 27: abbrvnat & 28: ametsoc & 29: apalike & 30: jqt1999 \\
+    31: plainnat & 32: jtb & 33: humanbio & 34: these & 35: chicagoa \\
+    36: development & 37: unsrtnat & 38: amsalpha & 39: alpha & 40: annotate\\
+    41: is-alpha & 42: wmaainf & 43: alphanum & 44: apasoft &\\
+  \hline
+  \end{tabular}
+\end{table}
+
+要查看这些样式的效果，可以查看
+\href{http://amath.colorado.edu/documentation/LaTeX/reference/faq/bibstyles.pdf}{\textcolor{blue}{bibstyles.pdf}}
+文件。大部分的样式都已经集成在大部分的 \LaTeX{} 系统中了，其他的可以从 
+\url{http://www.tug.org/tex-archive/biblio/bibtex/contrib/}下载。所有的引用样式
+都是后缀名为 \verb|.bst| 的文件。例如，要使用 \verb|abbrvnat| 样式，你必须保证在你
+的 \LaTeX{} 系统安装目录下有 \verb|abbrvnat.bst|文件，如果没有的话，你可以下载一
+个，然后放在你的工作目录下，或者其他 \LaTeX{} 能够找到的地方。
+
+设置好样式后，第二步是使用\verb|\bibliography| 设置文献库路径，将“yyy”改为你用
+JabRef 创建和维护的那个文献库的地址。
+
+接下来要做的就是在需要引用文献的地方使用~\verb|\cite{bibtexkey}| 或
+者~\verb|\upcite{bibtexkey}| 将文献引用进来，其中，~\verb|upcite| 是上标引用，你
+需要事先定义这个样式：
+
+\begin{tkzexample}[code only,small,num]
+  \newcommand{\upcite}[1]{\textsuperscript{\cite{#1}}} \end{tkzexample}
+
+~\verb|bibtexkey| 则为你要引用的文献的Bibtexkey，在 JabRef 中可以直接通过
+按下 $\Ctrl + \Shift$ + k 组合键获得Bibtexkey，或者直接通过按下 $\Ctrl +$ k 组合
+键获得形式为 ~\verb|\cite{bibtexkey}|的引用命令，然后粘贴进 \LaTeX{} 文档中。
+
+对于中文文献的处理，推荐使用北邮的 ~\verb|bstutf8.bst| 样式，这里有一个下载地址：
+\url{http://zzuthesis.googlecode.com/svn-history/r11/trunk/bstutf8.bst}。另外，
+如果出现乱码错误，则需要设置好文献库的编码。在 JabRef 中点击【File】
+$\rightarrow$ 【Data Properties】菜单项，打开数据属性设置窗口，将 Database
+encoding 选项设为 UTF8 即可。如图\ref{fig:utf8}所示。
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.5\textwidth]{ref.png}
+  \caption{设置文献库编码}
+  \label{fig:utf8}
+\end{figure}
+
+注意在编译文档时，记得 BibTeX 一下，生成 BibItem。
+
+\printindex
+
+\end{document}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

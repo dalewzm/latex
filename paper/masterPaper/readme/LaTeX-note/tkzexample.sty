@@ -1,0 +1,228 @@
+% Copyright 2009 by Alain Matthes
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Free Documentation License.
+%
+% The author of the original code 
+% of the environment 'codeexample' is Till Tantau
+% from the file pgfmanual-en-macros.tex
+%  (Copyright 2006 by Till Tantau)
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+% 
+% Diff between tkexample and codeexample
+% I removed :
+% graphicbackground 
+% I replaced  \xdef\code@temp{#1}% by \protected@xdef\code@temp{#1}}%
+% now the use of accented letters with utf8 is possible.
+% I changed  \def\code@mid{\hskip6pt}
+%  \def\code@width{\linewidth-12pt\tkzexamplewidth}%
+% into
+%      \def\code@mid{\hskip6pt\hskip2em}%
+%      \def\code@width{\linewidth-12pt-2em-\tkzexamplewidth}
+% this is  to add room for the numbers
+% I insert the next code to add numders in front of each line of code
+% \ifnum@show%
+%   \noindent%
+%   \llap{\colorbox{green!25!black}{%
+%         \textcolor{white}{%
+%         \number\value{code@cnt}}}\enspace}%
+%   \stepcounter{code@cnt}%
+% \fi
+% I changed some keys :
+% I added
+%	show num/.is if=num@show,
+%	num/.code= {\num@showtrue\setcounter{code@cnt}{1}},
+%	global	num/.code= {\num@showtrue},
+% and   latex/.code etc ...
+% I removed 	graphic/.code=	{\colorlet{graphicbackground}{#1}},
+% I removed   \raggedright
+%<----------------------------------------------------------------------------->
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tkzexample}[2009/02/14 v1 beta  code and graphic  ]
+\definecolor{graphicbackground}{rgb}{0.96,0.96,0.8}%
+\definecolor{codebackground}{rgb}{0.8,0.8,1}%
+%\colorlet{codebackground}{Peach!20}%
+\colorlet{numbackground}{Peach!60!black}%
+\definecolor{numcolor}{rgb}{1,1,1}%
+\makeatletter
+\newcounter{code@cnt}%
+
+\ifx\scantokens\@undefined
+  \PackageError{tkzexample}{You need to use extended latex
+    (elatex) or (pdfelatex) to use this package}{}
+\fi
+
+% Define \find@example such that it doesn't destroy catcodes:
+\begingroup
+\catcode`|=0
+\catcode`[= 1
+\catcode`]=2
+\catcode`\{=12
+\catcode `\}=12
+\catcode`\\=12 |gdef|find@example#1\end{tkzexample}[|endoftkzexample[#1]]
+|endgroup
+
+% define \returntospace.
+%
+% It should define NEWLINE as {}, spaces and tabs as \space.
+\begingroup
+\catcode`\^=7
+\catcode`\^^M=13
+\catcode`\^^I=13
+\catcode`\ =13%
+\gdef\returntospace{\catcode`\ =13\def {\space}\catcode`\^^I=13\def^^I{\space}\catcode`\^^M=13\def^^M{}}%
+\endgroup
+
+\begingroup
+\catcode`\%=13
+\catcode`\^^M=13
+\gdef\commenthandler{\catcode`\%=13\def%{\@gobble@till@return}}
+\gdef\@gobble@till@return#1^^M{}
+\gdef\@gobble@till@return@ignore#1^^M{\ignorespaces}
+\gdef\typesetcomment{\catcode`\%=13\def%{\@typeset@till@return}}
+\gdef\@typeset@till@return#1^^M{{\def%{\char`\%}\textsl{\char`\%#1}}\par}
+\endgroup
+
+
+
+\pgfqkeys{/tkzexample}{%
+   width/.code=  {\setlength\tkzexamplewidth{#1}},
+  graphic/.code=  {\colorlet{graphicbackground}{#1}},
+  code/.code= {\colorlet{codebackground}{#1}},
+	execute code/.is if=code@execute,
+	code only/.code=	{\code@executefalse},
+	show num/.is if=num@show,
+	num/.code= {\num@showtrue\setcounter{code@cnt}{1}},
+	global	num/.code= {\num@showtrue},
+	normal/.code=	{\def\code@size{}},
+	small/.code=	{\def\code@size{\small}},
+	very	small/.code=	{\def\code@size{\footnotesize}},
+	pre/.code=	{\def\code@pre{#1}},
+	post/.code=	{\def\code@post{#1}},
+  latex/.code= {\setlength\tkzexamplewidth{#1}%
+                 \def\code@pre{\begin{minipage}{#1}}%
+                 \def\code@post{\end{minipage}}},
+	vbox/.code=	{\def\code@pre{\vbox\bgroup\setlength{\hsize}{\linewidth-6pt}}\def\code@post{\egroup}},
+	ignorespaces/.code=	{\let\@gobble@till@return=\@gobble@till@return@ignore},
+	leave comments/.code=	{\def\code@catcode@hook{\catcode`\%=12}\let\commenthandler=\relax\let\typesetcomment=\relax},
+	every tkzexample/.style={width=8cm+7pt},
+}
+\def\code@size{}
+\def\code@pre{}
+\def\code@post{}
+\def\code@catcode@hook{}
+
+\newdimen\tkzexamplewidth
+\newif\ifcode@execute
+\newif\ifnum@show
+\newbox\tkzexamplebox
+\def\tkzexample[#1]{%
+  %\setcounter{code@cnt}{1}%
+  \begingroup%
+  \code@executetrue
+  \pgfqkeys{/tkzexample}{every tkzexample,#1}%
+  \parindent0pt
+  \begingroup%
+  \par%
+  \medskip%
+  \let\do\@makeother%
+  \dospecials%
+  \obeylines%
+  \@vobeyspaces%
+  \catcode`\%=13%
+  \catcode`\^^M=13%
+  \code@catcode@hook%
+  \relax%
+  \find@example}
+\def\endoftkzexample#1{%
+  \endgroup%
+  \ifcode@execute%
+    \setbox\tkzexamplebox=\hbox{%
+      {%
+        {%
+          \returntospace%
+          \commenthandler%
+          \protected@xdef\code@temp{#1}%added  by AM
+         }%
+       \colorbox{graphicbackground}{\color{black}\ignorespaces%
+        \code@pre\expandafter\scantokens\expandafter{\code@temp\ignorespaces}\code@post\ignorespaces}%
+    }%
+    }%
+    \ifdim\wd\tkzexamplebox>\tkzexamplewidth%
+      \def\code@start{\par}%
+      \def\code@flushstart{}%
+      \def\code@flushend{}%
+      \def\code@mid{\parskip2pt\par\noindent}%
+      \def\code@width{\linewidth-6pt}%
+      \def\code@end{}%
+    \else%
+      \def\code@start{%
+        \linewidth=\textwidth%
+        \parshape \@ne 0pt \linewidth
+        \leavevmode%
+        \hbox\bgroup}%
+      \def\code@flushstart{\hfill}%
+      \def\code@flushend{\hbox{}}%
+      \def\code@mid{\hskip6pt\hskip2em}%added \hskip2em by AM
+      \def\code@width{\linewidth-12pt-2em-\tkzexamplewidth}%modified by AM -2em
+      \def\code@end{\egroup}%
+    \fi%
+    \code@start%
+    \noindent%
+    \begin{minipage}[t]{\tkzexamplewidth}\raggedright
+      \hrule width0pt%
+      \code@size\vskip-1em% 
+      \code@flushstart\box\tkzexamplebox\code@flushend%
+      \vskip-1ex%
+      \leavevmode%
+    \end{minipage}%
+  \else%
+    \def\code@mid{\par}
+    \def\code@width{\linewidth-6pt}
+    \def\code@end{}
+  \fi%
+  \code@mid%  
+  \colorbox{codebackground}{%
+    \begin{minipage}[t]{\code@width}%
+      {%
+        \let\do\@makeother
+        \dospecials
+        \frenchspacing\@vobeyspaces
+        \normalfont\ttfamily\code@size%
+        \typesetcomment%
+        \@tempswafalse
+        \def\par{%
+          \if@tempswa
+            \leavevmode\null\@@par\penalty\interlinepenalty%
+            \ifnum@show%
+              \noindent\parskip=0pt%
+              \llap{\colorbox{numbackground}{%%added by AM
+                    \textcolor{numcolor}{%%added by AM
+                    \number\value{code@cnt}}}\enspace}%%added by AM
+              \stepcounter{code@cnt}%%added by AM
+            \fi
+          \else
+          \@tempswatrue%
+          \ifhmode\@@par\penalty\interlinepenalty\fi%
+            \ifnum@show%
+              \noindent\parskip=0pt%
+              \llap{\colorbox{numbackground}{%%added by AM
+                    \textcolor{numcolor}{%%added by AM
+                    \number\value{code@cnt}}}\enspace}%%added by AM
+              \stepcounter{code@cnt}%%added by AM
+            \fi
+          \fi}%
+        \obeylines
+        \everypar \expandafter{\the\everypar \unpenalty}%
+        #1}%
+    \end{minipage}}%
+  \code@end%
+  \par%
+  \medskip
+  \end{tkzexample}
+}
+
+\def\endtkzexample{\endgroup}
+
+\makeatother
