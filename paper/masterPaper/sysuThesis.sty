@@ -21,9 +21,12 @@
 %%更改行距
 \RequirePackage{setspace}
 \linespread{1.5}
+
+\RequirePackage{titlesec}
+
 %章节定制
- \CTEXsetup[name={第,章},number={\chinese{section}},format={\zihao{3}\heiti },
- beforeskip={2em},afterskip={1.1em}]{section}
+
+%\titleformat*{\section}{\centering}
 \CTEXsetup[format = {\zihao{-3}\heiti},numberformat={\zihao{-3}\bfseries}]{subsection}
 %数学公式加粗
 \RequirePackage{amsmath,bm}
